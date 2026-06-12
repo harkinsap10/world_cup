@@ -1,0 +1,12 @@
+gateways:
+  supabase:
+    connection:
+      type: postgres
+      host: aws-1-us-east-1.pooler.supabase.com  # <-- Changed 0 to 1 here
+      port: 6543
+      user: postgres.snlghlaorynxleagrlwu
+      password: H!3!eEMS88-%49z
+      database: postgres
+
+model_defaults:
+  dialect: postgres

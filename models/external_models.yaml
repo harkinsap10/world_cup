@@ -1,0 +1,6 @@
+id: postgres.staging_wc_teams
+type: external
+
+---
+id: postgres.staging_wc_matches
+type: external
