@@ -17,6 +17,8 @@ jobs:
         with:
           python-version: '3.10'
       - name: Install dependencies
-        run: pip install sqlmesh duckdb
+        run: pip install "sqlmesh[postgres]" duckdb
       - name: Run SQLMesh
+        env:
+          SUPABASE_PASSWORD: ${{ secrets.SUPABASE_PASSWORD }}
         run: sqlmesh plan --auto-apply
