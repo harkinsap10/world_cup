@@ -10,7 +10,10 @@ TEAMS_URL = "http://api.football-data.org/v4/competitions/WC/teams"
 MATCHES_URL = "http://api.football-data.org/v4/competitions/WC/matches"
 
 # 2. Database Connection (Pulls password from GitHub Action env var, falls back to hardcoded if local)
-DB_PASSWORD = os.environ.get("SUPABASE_PASSWORD", "H!3!eEMS88-%49z")
+DB_PASSWORD = os.environ.get("SUPABASE_PASSWORD")
+
+if not DB_PASSWORD:
+    raise ValueError("Missing SUPABASE_PASSWORD environment variable!")
 
 DB_PARAMS = {
     "host": "aws-0-us-east-1.pooler.supabase.com",
