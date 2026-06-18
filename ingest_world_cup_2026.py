@@ -1,18 +1,22 @@
+import os
+import sys
 import requests
 import psycopg2
 from psycopg2.extras import execute_values
 
-# 1. API Configuration (football-data.org v4)
+# 1. API Configuration
 API_KEY = "57eaddb60f8242e8abea97d90d08e9e6"
 TEAMS_URL = "http://api.football-data.org/v4/competitions/WC/teams"
 MATCHES_URL = "http://api.football-data.org/v4/competitions/WC/matches"
 
-# 2. Database Connection
+# 2. Database Connection (Pulls password from GitHub Action env var, falls back to hardcoded if local)
+DB_PASSWORD = os.environ.get("SUPABASE_PASSWORD", "H!3!eEMS88-%49z")
+
 DB_PARAMS = {
-    "host": "aws-0-us-east-1.pooler.supabase.com", # Note: If this fails, switch to "aws-1-us-east-1.pooler.supabase.com"
+    "host": "aws-0-us-east-1.pooler.supabase.com",
     "port": 6543,
     "user": "postgres.snlghlaorynxleagrlwu",
-    "password": "H!3!eEMS88-%49z",
+    "password": DB_PASSWORD,
     "database": "postgres"
 }
 
@@ -26,8 +30,6 @@ def fetch_data(url):
 
 def setup_tables(cursor):
     print("🛠️ Creating staging tables for Teams and Matches...")
-    
-    # Teams Table
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS staging_wc_teams (
             team_id INT PRIMARY KEY,
@@ -36,8 +38,6 @@ def setup_tables(cursor):
             crest_url TEXT
         );
     """)
-    
-    # Matches / Fixtures Table
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS staging_wc_matches (
             match_id INT PRIMARY KEY,
@@ -55,11 +55,7 @@ def setup_tables(cursor):
 def load_teams(cursor, data):
     teams = data.get('teams', [])
     print(f"📥 Preparing {len(teams)} teams for import...")
-    
-    values = [
-        (team.get('id'), team.get('name'), team.get('tla'), team.get('crest'))
-        for team in teams
-    ]
+    values = [(t.get('id'), t.get('name'), t.get('tla'), t.get('crest')) for t in teams]
     
     insert_query = """
         INSERT INTO staging_wc_teams (team_id, name, tla, crest_url)
@@ -73,15 +69,12 @@ def load_teams(cursor, data):
 
 def load_matches(cursor, data):
     matches = data.get('matches', [])
-    print(f"📥 Preparing {len(matches)} matches/scores for import...")
+    print(f"📥 Preparing {len(matches)} matches/scores for daily update...")
     
     values = []
     for m in matches:
         score_data = m.get('score', {})
         full_time = score_data.get('fullTime', {})
-        
-        home_id = m.get('homeTeam', {}).get('id')
-        away_id = m.get('awayTeam', {}).get('id')
         
         values.append((
             m.get('id'),
@@ -89,19 +82,24 @@ def load_matches(cursor, data):
             m.get('status'),
             m.get('matchday'),
             m.get('stage'),
-            home_id,
-            away_id,
+            m.get('homeTeam', {}).get('id'),
+            m.get('awayTeam', {}).get('id'),
             full_time.get('home'),
             full_time.get('away')
         ))
     
+    # This explicit DO UPDATE SET guarantees daily scores overwrite the old ones
     insert_query = """
         INSERT INTO staging_wc_matches (
             match_id, utc_date, status, matchday, stage, home_team_id, away_team_id, score_home, score_away
         ) VALUES %s
         ON CONFLICT (match_id) DO UPDATE SET
+            utc_date = EXCLUDED.utc_date,
             status = EXCLUDED.status,
+            matchday = EXCLUDED.matchday,
             stage = EXCLUDED.stage,
+            home_team_id = EXCLUDED.home_team_id,
+            away_team_id = EXCLUDED.away_team_id,
             score_home = EXCLUDED.score_home,
             score_away = EXCLUDED.score_away;
     """
@@ -118,7 +116,6 @@ if __name__ == "__main__":
         try:
             conn = psycopg2.connect(**DB_PARAMS)
         except Exception as conn_err:
-            # Fallback block to try the secondary cluster hostname if aws-0 routes out
             if "aws-0-" in DB_PARAMS["host"]:
                 print("🔄 Trying alternative cluster route (aws-1)...")
                 DB_PARAMS["host"] = "aws-1-us-east-1.pooler.supabase.com"
@@ -135,7 +132,8 @@ if __name__ == "__main__":
         conn.commit()
         cursor.close()
         conn.close()
-        print("🎉 Relational World Cup database successfully loaded into Supabase!")
+        print("🎉 Relational World Cup database successfully updated in Supabase!")
         
     except Exception as e:
         print(f"💥 Pipeline failed: {e}")
+        sys.exit(1) # THIS IS CRITICAL: Forces GitHub Action to fail if something goes wrong

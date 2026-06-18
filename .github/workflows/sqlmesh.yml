@@ -17,7 +17,15 @@ jobs:
         with:
           python-version: '3.10'
       - name: Install dependencies
-        run: pip install "sqlmesh[postgres]" duckdb
+        run: pip install "sqlmesh[postgres]" duckdb pandas psycopg2-binary
+        
+      # 1. Run the ingestion script first
+      - name: Run Ingestion
+        env:
+          SUPABASE_PASSWORD: ${{ secrets.SUPABASE_PASSWORD }}
+        run: python ingest_world_cup_2026.py
+        
+      # 2. Then run SQLMesh
       - name: Run SQLMesh
         env:
           SUPABASE_PASSWORD: ${{ secrets.SUPABASE_PASSWORD }}
