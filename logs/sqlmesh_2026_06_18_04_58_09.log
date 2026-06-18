@@ -1,0 +1,85 @@
+2026-06-18 04:58:10,570 - MainThread - sqlmesh.core.config.connection - INFO - Creating new DuckDB adapter for in-memory database (connection.py:503)
+2026-06-18 04:58:17,302 - MainThread - sqlmesh.core.plan.evaluator - INFO - Evaluating plan stage CreateSnapshotRecordsStage (evaluator.py:123)
+2026-06-18 04:58:17,510 - MainThread - sqlmesh.core.plan.evaluator - INFO - Evaluating plan stage PhysicalLayerSchemaCreationStage (evaluator.py:123)
+2026-06-18 04:58:17,526 - ThreadPoolExecutor-1_0 - sqlmesh.core.snapshot.evaluator - INFO - Creating schema 'postgres.sqlmesh__sqlmesh_example' (evaluator.py:1468)
+2026-06-18 04:58:17,526 - ThreadPoolExecutor-1_1 - sqlmesh.core.snapshot.evaluator - INFO - Creating schema 'postgres.sqlmesh__sqlmesh' (evaluator.py:1468)
+2026-06-18 04:58:17,526 - ThreadPoolExecutor-1_2 - sqlmesh.core.snapshot.evaluator - INFO - Creating schema 'postgres.sqlmesh__marts' (evaluator.py:1468)
+2026-06-18 04:58:17,787 - ThreadPoolExecutor-1_0 - sqlmesh.core.engine_adapter.base - INFO - Executing SQL: /* SQLMESH_PLAN: f8bcfdc684544fa9bb4f7cbed1248c93 */ CREATE SCHEMA IF NOT EXISTS "sqlmesh__sqlmesh_example" (base.py:2629)
+2026-06-18 04:58:18,031 - ThreadPoolExecutor-1_1 - sqlmesh.core.engine_adapter.base - INFO - Executing SQL: /* SQLMESH_PLAN: f8bcfdc684544fa9bb4f7cbed1248c93 */ CREATE SCHEMA IF NOT EXISTS "sqlmesh__sqlmesh" (base.py:2629)
+2026-06-18 04:58:18,272 - ThreadPoolExecutor-1_2 - sqlmesh.core.engine_adapter.base - INFO - Executing SQL: /* SQLMESH_PLAN: f8bcfdc684544fa9bb4f7cbed1248c93 */ CREATE SCHEMA IF NOT EXISTS "sqlmesh__marts" (base.py:2629)
+2026-06-18 04:58:18,400 - MainThread - sqlmesh.core.plan.evaluator - INFO - Evaluating plan stage BackfillStage (evaluator.py:123)
+2026-06-18 04:58:18,400 - ThreadPoolExecutor-2_0 - sqlmesh.core.snapshot.evaluator - INFO - Listing data objects in schema postgres.sqlmesh__sqlmesh (evaluator.py:1635)
+2026-06-18 04:58:18,400 - ThreadPoolExecutor-2_1 - sqlmesh.core.snapshot.evaluator - INFO - Listing data objects in schema postgres.sqlmesh__marts (evaluator.py:1635)
+2026-06-18 04:58:18,648 - ThreadPoolExecutor-2_0 - sqlmesh.core.engine_adapter.base - INFO - Executing SQL: /* SQLMESH_PLAN: f8bcfdc684544fa9bb4f7cbed1248c93 */ SELECT current_catalog (base.py:2629)
+2026-06-18 04:58:18,878 - ThreadPoolExecutor-2_1 - sqlmesh.core.engine_adapter.base - INFO - Executing SQL: /* SQLMESH_PLAN: f8bcfdc684544fa9bb4f7cbed1248c93 */ SELECT current_catalog (base.py:2629)
+2026-06-18 04:58:19,121 - ThreadPoolExecutor-3_0 - sqlmesh.core.snapshot.evaluator - INFO - Evaluating snapshot SnapshotId<"postgres"."sqlmesh"."stg_team_groups": 2367093558> (evaluator.py:730)
+2026-06-18 04:58:19,362 - ThreadPoolExecutor-3_0 - sqlmesh.core.snapshot.evaluator - INFO - Inserting data for snapshot SnapshotId<"postgres"."sqlmesh"."stg_team_groups": 2367093558> (evaluator.py:971)
+2026-06-18 04:58:19,378 - ThreadPoolExecutor-3_0 - sqlmesh.core.snapshot.evaluator - INFO - Inserting batch (2026-06-10 00:00:00, 2026-06-11 00:00:00) into postgres.sqlmesh__sqlmesh.sqlmesh__stg_team_groups__2486787333' (evaluator.py:1003)
+2026-06-18 04:58:19,384 - ThreadPoolExecutor-3_0 - sqlmesh.core.engine_adapter.base - INFO - Executing SQL: /* SQLMESH_PLAN: f8bcfdc684544fa9bb4f7cbed1248c93 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'sqlmesh__stg_team_groups__2486787333') AND "nspname" = 'sqlmesh__sqlmesh' (base.py:2629)
+2026-06-18 04:58:19,465 - ThreadPoolExecutor-3_0 - sqlmesh.core.engine_adapter.base - INFO - Executing SQL: /* SQLMESH_PLAN: f8bcfdc684544fa9bb4f7cbed1248c93 */ CREATE TABLE IF NOT EXISTS "sqlmesh__sqlmesh"."sqlmesh__stg_team_groups__2486787333" AS SELECT "team" AS "team", "group_name" AS "group_name" FROM "postgres"."public"."staging_teams_groups" AS "staging_teams_groups" (base.py:2629)
+2026-06-18 04:58:19,876 - ThreadPoolExecutor-3_0 - sqlmesh.core.state_sync.db.facade - INFO - Adding interval (2026-06-10 00:00:00, 2026-06-11 00:00:00) for snapshot SnapshotId<"postgres"."sqlmesh"."stg_team_groups": 2367093558> (facade.py:639)
+2026-06-18 04:58:19,878 - ThreadPoolExecutor-3_0 - sqlmesh.core.state_sync.db.interval - INFO - Pushing intervals for snapshot SnapshotId<"postgres"."sqlmesh"."stg_team_groups": 2367093558> (interval.py:215)
+2026-06-18 04:58:19,971 - ThreadPoolExecutor-3_1 - sqlmesh.core.snapshot.evaluator - INFO - Evaluating snapshot SnapshotId<"postgres"."marts"."fct_wc_group_stage_results": 1661155636> (evaluator.py:730)
+2026-06-18 04:58:20,261 - ThreadPoolExecutor-3_1 - sqlmesh.core.snapshot.evaluator - INFO - Inserting data for snapshot SnapshotId<"postgres"."marts"."fct_wc_group_stage_results": 1661155636> (evaluator.py:971)
+2026-06-18 04:58:20,285 - ThreadPoolExecutor-3_1 - sqlmesh.core.snapshot.evaluator - INFO - Inserting batch (2026-06-10 00:00:00, 2026-06-11 00:00:00) into postgres.sqlmesh__marts.marts__fct_wc_group_stage_results__4257593629' (evaluator.py:1003)
+2026-06-18 04:58:20,291 - ThreadPoolExecutor-3_1 - sqlmesh.core.engine_adapter.base - INFO - Executing SQL: /* SQLMESH_PLAN: f8bcfdc684544fa9bb4f7cbed1248c93 */ SELECT "attname" AS "column_name", "pg_catalog".format_type("atttypid", "atttypmod") AS "data_type" FROM "pg_catalog"."pg_attribute" JOIN "pg_catalog"."pg_class" ON "pg_class"."oid" = "attrelid" JOIN "pg_catalog"."pg_namespace" ON "pg_namespace"."oid" = "relnamespace" WHERE ("attnum" > 0 AND NOT "attisdropped" AND "relname" = 'marts__fct_wc_group_stage_results__4257593629') AND "nspname" = 'sqlmesh__marts' (base.py:2629)
+2026-06-18 04:58:20,375 - ThreadPoolExecutor-3_1 - sqlmesh.core.engine_adapter.base - INFO - Executing SQL: /* SQLMESH_PLAN: f8bcfdc684544fa9bb4f7cbed1248c93 */ CREATE TABLE IF NOT EXISTS "sqlmesh__marts"."marts__fct_wc_group_stage_results__4257593629" AS WITH "match_outcomes" AS (SELECT "home_team_id" AS "team_id", "score_home" AS "goals_for", "score_away" AS "goals_against", CASE WHEN "score_home" > "score_away" THEN 3 WHEN "score_home" = "score_away" THEN 1 ELSE 0 END AS "points" FROM "postgres"."staging"."stg_wc_matches" AS "stg_wc_matches" UNION ALL SELECT "away_team_id" AS "team_id", "score_away" AS "goals_for", "score_home" AS "goals_against", CASE WHEN "score_away" > "score_home" THEN 3 WHEN "score_away" = "score_home" THEN 1 ELSE 0 END AS "points" FROM "postgres"."staging"."stg_wc_matches" AS "stg_wc_matches") SELECT "g"."group_name" AS "group_name", "t"."name" AS "country_name", COUNT(*) AS "games_played", SUM("o"."goals_for") AS "goals_for", SUM("o"."goals_against") AS "goals_against", (SUM("o"."goals_for") - SUM("o"."goals_against")) AS "goal_difference", SUM("o"."points") AS "points" FROM "match_outcomes" AS "o" JOIN "postgres"."staging"."stg_wc_teams" AS "t" ON "o"."team_id" = "t"."team_id" JOIN "postgres"."sqlmesh__sqlmesh"."sqlmesh__stg_team_groups__2486787333" AS "g" ON "t"."name" = "g"."team" GROUP BY 1, 2 ORDER BY "group_name" ASC, "points" DESC, "goal_difference" DESC (base.py:2629)
+2026-06-18 04:58:20,464 - MainThread - sqlmesh.core.scheduler - INFO - Execution failed for node EvaluateNode(snapshot_name='"postgres"."marts"."fct_wc_group_stage_results"', interval=(1781049600000, 1781136000000), batch_index=0) (scheduler.py:618)
+Traceback (most recent call last):
+  File "C:\sandbox-pipeline\.venv\Lib\site-packages\sqlmesh\utils\concurrency.py", line 69, in _process_node
+    self.fn(node)
+  File "C:\sandbox-pipeline\.venv\Lib\site-packages\sqlmesh\core\scheduler.py", line 554, in run_node
+    audit_results = self.evaluate(
+                    ^^^^^^^^^^^^^^
+  File "C:\sandbox-pipeline\.venv\Lib\site-packages\sqlmesh\core\scheduler.py", line 229, in evaluate
+    wap_id = self.snapshot_evaluator.evaluate(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\sandbox-pipeline\.venv\Lib\site-packages\sqlmesh\core\snapshot\evaluator.py", line 186, in evaluate
+    result = self._evaluate_snapshot(
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\sandbox-pipeline\.venv\Lib\site-packages\sqlmesh\core\snapshot\evaluator.py", line 840, in _evaluate_snapshot
+    self._render_and_insert_snapshot(
+  File "C:\sandbox-pipeline\.venv\Lib\site-packages\sqlmesh\core\snapshot\evaluator.py", line 1060, in _render_and_insert_snapshot
+    apply(query_or_df, index)
+  File "C:\sandbox-pipeline\.venv\Lib\site-packages\sqlmesh\core\snapshot\evaluator.py", line 1009, in apply
+    evaluation_strategy.insert(
+  File "C:\sandbox-pipeline\.venv\Lib\site-packages\sqlmesh\core\snapshot\evaluator.py", line 2480, in insert
+    self._replace_query_for_model(model, table_name, query_or_df, render_kwargs, **kwargs)
+  File "C:\sandbox-pipeline\.venv\Lib\site-packages\sqlmesh\core\snapshot\evaluator.py", line 2211, in _replace_query_for_model
+    self.adapter.replace_query(
+  File "C:\sandbox-pipeline\.venv\Lib\site-packages\sqlmesh\core\engine_adapter\shared.py", line 350, in internal_wrapper
+    return func(*list_args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\sandbox-pipeline\.venv\Lib\site-packages\sqlmesh\core\engine_adapter\base.py", line 529, in replace_query
+    return self._create_table_from_source_queries(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\sandbox-pipeline\.venv\Lib\site-packages\sqlmesh\core\engine_adapter\base.py", line 939, in _create_table_from_source_queries
+    self._create_table(
+  File "C:\sandbox-pipeline\.venv\Lib\site-packages\sqlmesh\core\engine_adapter\base.py", line 982, in _create_table
+    self.execute(
+  File "C:\sandbox-pipeline\.venv\Lib\site-packages\sqlmesh\core\engine_adapter\base.py", line 2606, in execute
+    self._execute(sql, track_rows_processed, **kwargs)
+  File "C:\sandbox-pipeline\.venv\Lib\site-packages\sqlmesh\core\engine_adapter\base.py", line 2638, in _execute
+    self.cursor.execute(sql, **kwargs)
+psycopg2.errors.UndefinedTable: relation "staging.stg_wc_matches" does not exist
+LINE 1: ...= "score_away" THEN 1 ELSE 0 END AS "points" FROM "postgres"...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+sqlmesh.utils.concurrency.NodeExecutionFailedError: Execution failed for node EvaluateNode(snapshot_name='"postgres"."marts"."fct_wc_group_stage_results"', interval=(1781049600000, 1781136000000), batch_index=0)
+2026-06-18 04:58:20,479 - MainThread - sqlmesh.core.context - INFO - Plan application failed. (context.py:1816)
+Traceback (most recent call last):
+  File "C:\sandbox-pipeline\.venv\Lib\site-packages\sqlmesh\core\context.py", line 1808, in apply
+    self._apply(plan, circuit_breaker)
+  File "C:\sandbox-pipeline\.venv\Lib\site-packages\sqlmesh\core\context.py", line 2602, in _apply
+    self._scheduler.create_plan_evaluator(self).evaluate(
+  File "C:\sandbox-pipeline\.venv\Lib\site-packages\sqlmesh\core\plan\evaluator.py", line 105, in evaluate
+    self._evaluate_stages(plan_stages, plan)
+  File "C:\sandbox-pipeline\.venv\Lib\site-packages\sqlmesh\core\plan\evaluator.py", line 125, in _evaluate_stages
+    handler(stage, plan)
+  File "C:\sandbox-pipeline\.venv\Lib\site-packages\sqlmesh\core\plan\evaluator.py", line 264, in visit_backfill_stage
+    raise PlanError("Plan application failed.")
+sqlmesh.utils.errors.PlanError: Plan application failed.
+2026-06-18 04:58:20,494 - MainThread - root - INFO - Shutting down the event dispatcher (dispatcher.py:159)

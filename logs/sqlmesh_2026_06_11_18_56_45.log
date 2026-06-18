@@ -1,2 +1,0 @@
-2026-06-11 18:56:45,417 - MainThread - sqlmesh.core.console - WARNING - The UI is deprecated and will be removed in a future version. Please use the SQLMesh VSCode extension instead. Learn more at https://sqlmesh.readthedocs.io/en/stable/guides/vscode/ (console.py:2335)
-2026-06-11 18:56:45,435 - MainThread - root - INFO - Shutting down the event dispatcher (dispatcher.py:159)
